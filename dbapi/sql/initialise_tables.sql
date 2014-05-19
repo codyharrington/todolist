@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS "user" (
+  username VARCHAR(10) NOT NULL PRIMARY KEY,
+  email VARCHAR(20) UNIQUE,
+  password VARCHAR(50)
+);
+
+CREATE TABLE IF NOT EXISTS task (
+  id INTEGER NOT NULL PRIMARY KEY,
+  start TIMESTAMP,
+  "end" TIMESTAMP,
+  "desc" VARCHAR(1000),
+  "owner" VARCHAR(10) REFERENCES "user"(username)
+);
