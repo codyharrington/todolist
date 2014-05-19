@@ -1,6 +1,6 @@
 __author__ = 'cody'
 
-from todolist import app
+from webfront import app
 
 @app.route("/")
 def root():
