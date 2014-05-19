@@ -1,0 +1,27 @@
+body {
+    /*background: #114770;*/
+}
+
+.login-form input {
+    display: block;
+}
+
+.login-panel {
+    vertical-align: middle;
+    margin-top: 150%
+}
+
+.login-buttons input {
+    display: inline;
+    margin-top: 10px;
+    width: 100%
+}
+
+* {
+  -webkit-border-radius: 0 !important;
+     -moz-border-radius: 0 !important;
+          border-radius: 0 !important;
+}
+
+
+
