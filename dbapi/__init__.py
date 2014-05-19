@@ -6,4 +6,8 @@ app = Flask(__name__)
 app.config.from_object("config.Dbapi")
 
 db_engine = create_engine(app.config["CONNECT_STRING"])
-db_session = sessionmaker(bind=db_engine)
+Session = sessionmaker(bind=db_engine)
+db_session = Session()
+
+from dbapi.controllers.task import *
+from dbapi.controllers.user import *
