@@ -6,18 +6,23 @@ from ujson import loads, dumps
 
 class LocalUser():
     data = {}
+    authenticated = False
+    enabled = False
 
-    def __init__(self, data):
+    def __init__(self, data={}):
         self.data = data
 
     def is_authenticated(self):
-        pass
+        return self.authenticated
 
     def is_active(self):
-        pass
+        return True # To be updated once email confirmations are implemented
 
     def is_anonymous(self):
         return False
+
+    def set_data(self, data_obj):
+        self.data = data_obj
 
     def get_id(self):
         return self.data["username"]
@@ -36,9 +41,7 @@ class UserManager(RestClient):
         response_obj, status = self.put_resource("user", data=data)
         if status == HTTPStatusCodes.FORBIDDEN:
             print(ALREADY_EXISTS)
-            return None
-        else:
-            return response_obj
+        return response_obj
 
     def delete_user(self, username):
         data, status = self.delete_resource("user/{}".format(username))
@@ -51,7 +54,9 @@ class UserManager(RestClient):
             print(AUTHENTICATION_FAILURE)
             return None
         else:
-            return LocalUser(response_obj)
+            user = LocalUser(response_obj)
+            user.authenticated = True
+            return user
 
 
 

@@ -1,7 +1,7 @@
 __author__ = 'cody'
 import requests
-from ujson import dumps, loads
-from flask import Response
+from json import dumps, loads
+from flask import Response, jsonify
 from utils.messages import *
 from utils.exceptions import *
 
@@ -23,6 +23,7 @@ class HTTPStatusCodes():
     INTERNAL_SERVER_ERROR = 500
 
 class RestClient(object):
+    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
     def __init__(self, api_url):
         self.api_url = api_url.rstrip("/")
@@ -37,7 +38,7 @@ class RestClient(object):
             return loads(response.text), response.status_code
 
     def post_resource(self, uri, data={}):
-        response = requests.post("{}/{}".format(self.api_url, uri.lstrip("/")), data)
+        response = requests.post("{}/{}".format(self.api_url, uri.lstrip("/")), data=dumps(data), headers=self.headers)
         if response.status_code == HTTPStatusCodes.NOT_FOUND:
             raise NotFoundException
         elif response.status_code == HTTPStatusCodes.INTERNAL_SERVER_ERROR:
@@ -46,16 +47,17 @@ class RestClient(object):
             return loads(response.text), response.status_code
 
     def put_resource(self, uri, data={}):
-        response = requests.put("{}/{}".format(self.api_url, uri.lstrip("/")), data)
+        response = requests.put("{}/{}".format(self.api_url, uri.lstrip("/")), data=dumps(data), headers=self.headers)
         if response.status_code == HTTPStatusCodes.NOT_FOUND:
             raise NotFoundException
         elif response.status_code == HTTPStatusCodes.INTERNAL_SERVER_ERROR:
             raise InternalServerErrorException
         else:
+            print("put resource response text: {}".format(response.text))
             return loads(response.text), response.status_code
 
     def delete_resource(self, uri):
-        response = requests.get("{}/{}".format(self.api_url, uri.lstrip("/")))
+        response = requests.delete("{}/{}".format(self.api_url, uri.lstrip("/")))
         if response.status_code == HTTPStatusCodes.NOT_FOUND:
             raise NotFoundException
         elif response.status_code == HTTPStatusCodes.INTERNAL_SERVER_ERROR:
@@ -69,11 +71,11 @@ def rest_jsonify(data={}, status=HTTPStatusCodes.OK, **kwargs):
     dictionary to convert to json. Good for adding err or message parameters"""
     if len(kwargs) > 0:
         data.update(kwargs)
-    return Response(response=dumps(data), mimetype="application/json", status=status)
+    return Response(dumps(data), mimetype="application/json", status=status)
 
 def validate_convert_request(request_data, required_headers=[]):
     try:
-        data = loads(request_data)
+        data = loads(request_data.decode())
     except ValueError:
         raise MalformedJSONException
     if len(data) == 0:
