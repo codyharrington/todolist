@@ -1,20 +1,19 @@
-body {
-    /*background: #114770;*/
-}
-
 .login-form input {
     display: block;
 }
 
-.login-panel {
-    vertical-align: middle;
-    margin-top: 150%
+.login-signup-form {
+    margin-top: 25%;
 }
 
-.login-buttons input {
+.login-signup-submit input {
     display: inline;
     margin-top: 10px;
-    width: 100%
+    width: 100%;
+}
+
+.login-signup-other {
+    margin-top: 5px;
 }
 
 * {
@@ -22,6 +21,8 @@ body {
      -moz-border-radius: 0 !important;
           border-radius: 0 !important;
 }
+
+
 
 
 

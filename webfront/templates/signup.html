@@ -1,0 +1,17 @@
+{% extends "centered_template.html" %}
+{% block centered_body %}
+  <form id="sign-up-form" class="login-signup-form form-group" action="/login" method="POST">
+        <div class="row login-fields">
+            <input type="text" id="username" name="username" placeholder="Desired username" class="form-control">
+            <input type="password" id="password" name="password" placeholder="Password" class="form-control">
+            <input type="password" id="repassword" name="repassword" placeholder="Confirm password" class="form-control">
+            <input type="text" id="email" name="email" placeholder="Email (Optional)" class="form-control">
+        </div>
+        <div class="row login-signup-submit">
+            <input type="submit" id="register" value="Register" class="btn btn-lg btn-primary">
+        </div>
+        <div class="row login-signup-other">
+            <a href="/login">Log in</a>
+        </div>
+    </form>
+{% endblock %}

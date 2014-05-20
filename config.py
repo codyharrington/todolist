@@ -5,7 +5,7 @@ class Config():
     DEBUG = True
 
 class Webfront(Config):
-    pass
+    DATABASE_URL = "http://localhost:5000"
 
 class Dbapi(Config):
     USER = "todolist"

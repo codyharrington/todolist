@@ -2,6 +2,8 @@ __author__ = 'cody'
 
 from sqlalchemy.ext.declarative import declarative_base as real_declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from dbapi import app_bcrypt
+from bcrypt import gensalt
 
 
 # The below code was taken from
@@ -32,7 +34,8 @@ class Base(object):
         return self.columnitems
 
     def fromdict(self, dict_obj):
-        map(self.__setattr__, dict_obj.keys(), dict_obj.values())
+        [self.__setattr__(key, dict_obj[key]) for key in self.columnitems
+         if key.lower() in map(str.lower, dict_obj.keys())]
 
 # Define our schema
 
@@ -41,11 +44,40 @@ class User(Base):
     username = Column(String, primary_key=True)
     email = Column(String, unique=True)
     password = Column(String)
+    salt = Column(String)
+    required_fields = ["username", "password"]
+
+    def set_password(self, password):
+        self.salt = gensalt()
+        self.password = app_bcrypt.generate_password_hash(self.salt + str(password), 100)
+
+    def check_password(self, password):
+        return app_bcrypt.check_password_hash(self.salt + str(password), self.password)
+
+    def todict(self):
+        data = super().todict()
+        # We don't want to reveal the salt or password
+        if "password" in data:
+            del data["password"]
+        if "salt" in data:
+            del data["salt"]
+        return data
+
+    def fromdict(self, dict_obj):
+        super().fromdict(dict_obj)
+        # We want to make sure that the password is stored in the database as a hash
+        if "password" in dict_obj:
+            self.set_password(dict_obj["password"])
+
 
 class Task(Base):
     __tablename__ = "task"
     id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
     start = Column(DateTime)
     end = Column(DateTime)
     desc = Column(String)
     owner = Column(String, ForeignKey("user.username"), nullable=False)
+    required_fields = ["name"]
+
+
