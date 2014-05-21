@@ -9,7 +9,7 @@ from utils.exceptions import *
 
 @app.route("/user", methods=["GET"])
 def get_all_users():
-    all_users = map(User.todict, flask.g.db_session.query(User).all())
+    all_users = [user.todict() for user in flask.g.db_session.query(User).all()]
     return rest_jsonify(all_users)
 
 @app.route("/user", methods=["POST", "PUT"])
@@ -54,9 +54,8 @@ def authenticate_user():
     else:
         return rest_jsonify(user.todict())
 
-
 @app.route("/user/<username>/tasks", methods=["GET"])
 def get_user_tasks(username):
-    matching_tasks = map(Task.todict, flask.g.db_session.query(Task).filter(Task.owner == username).all())
+    matching_tasks = [task.todict() for task in flask.g.db_session.query(Task).filter(Task.owner == username).all()]
     return rest_jsonify(matching_tasks)
 

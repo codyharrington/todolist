@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS "user" (
   username VARCHAR(10) NOT NULL PRIMARY KEY,
   email VARCHAR(20) UNIQUE,
-  password VARCHAR(50),
-  salt VARCHAR(15)
+  password VARCHAR(100),
+  salt VARCHAR(50)
 );
 
 CREATE TABLE IF NOT EXISTS task (

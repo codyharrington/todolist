@@ -1,6 +1,6 @@
 __author__ = 'cody'
 import requests
-from json import dumps, loads
+from ujson import dumps, loads
 from flask import Response, jsonify
 from utils.messages import *
 from utils.exceptions import *
@@ -24,12 +24,27 @@ class HTTPStatusCodes():
 
 class RestClient(object):
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+    last = {}
 
     def __init__(self, api_url):
         self.api_url = api_url.rstrip("/")
 
+    def _store_last(self, request, response):
+        """Store some details of request and response so they can be inspected later.
+        The body of the response is not stored as it could be very large"""
+        self.last["request"] = {
+            "headers": request.headers, "body": request.body,
+            "method": request.method, "url": request.url
+        }
+        self.last["response"] = {
+            "encoding": response.encoding, "headers": response.headers,
+            "is_redirect": response.is_redirect, "status_code": response.status_code,
+            "url": response.url
+        }
+
     def get_resource(self, uri):
         response = requests.get("{}/{}".format(self.api_url, uri.rstrip("/")))
+        self._store_last(response.request, response)
         if response.status_code == HTTPStatusCodes.NOT_FOUND:
             raise NotFoundException
         elif response.status_code == HTTPStatusCodes.INTERNAL_SERVER_ERROR:
@@ -39,6 +54,7 @@ class RestClient(object):
 
     def post_resource(self, uri, data={}):
         response = requests.post("{}/{}".format(self.api_url, uri.lstrip("/")), data=dumps(data), headers=self.headers)
+        self._store_last(response.request, response)
         if response.status_code == HTTPStatusCodes.NOT_FOUND:
             raise NotFoundException
         elif response.status_code == HTTPStatusCodes.INTERNAL_SERVER_ERROR:
@@ -48,23 +64,23 @@ class RestClient(object):
 
     def put_resource(self, uri, data={}):
         response = requests.put("{}/{}".format(self.api_url, uri.lstrip("/")), data=dumps(data), headers=self.headers)
+        self._store_last(response.request, response)
         if response.status_code == HTTPStatusCodes.NOT_FOUND:
             raise NotFoundException
         elif response.status_code == HTTPStatusCodes.INTERNAL_SERVER_ERROR:
             raise InternalServerErrorException
         else:
-            print("put resource response text: {}".format(response.text))
             return loads(response.text), response.status_code
 
     def delete_resource(self, uri):
         response = requests.delete("{}/{}".format(self.api_url, uri.lstrip("/")))
+        self._store_last(response.request, response)
         if response.status_code == HTTPStatusCodes.NOT_FOUND:
             raise NotFoundException
         elif response.status_code == HTTPStatusCodes.INTERNAL_SERVER_ERROR:
             raise InternalServerErrorException
         else:
             return loads(response.text), response.status_code
-
 
 def rest_jsonify(data={}, status=HTTPStatusCodes.OK, **kwargs):
     """This method can take optional keyword arguments which will be added to the

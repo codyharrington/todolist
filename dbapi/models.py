@@ -34,8 +34,7 @@ class Base(object):
         return self.columnitems
 
     def fromdict(self, dict_obj):
-        [self.__setattr__(key, dict_obj[key]) for key in self.columnitems
-         if key.lower() in map(str.lower, dict_obj.keys())]
+        [self.__setattr__(key, dict_obj[key]) for key in dict_obj.keys() if key in self.columns]
 
 # Define our schema
 
@@ -49,10 +48,10 @@ class User(Base):
 
     def set_password(self, password):
         self.salt = gensalt()
-        self.password = app_bcrypt.generate_password_hash(self.salt + str(password), 100)
+        self.password = app_bcrypt.generate_password_hash(self.salt + str(password))
 
     def check_password(self, password):
-        return app_bcrypt.check_password_hash(self.salt + str(password), self.password)
+        return app_bcrypt.check_password_hash(self.password, self.salt + str(password))
 
     def todict(self):
         data = super().todict()

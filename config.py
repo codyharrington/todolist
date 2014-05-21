@@ -11,11 +11,11 @@ class Webfront(Config):
 class Dbapi(Config):
     USER = "todolist"
     PASSWORD = "todolist"
-    HOST = ""
-    PORT = ""
+    HOST = "localhost"
+    PORT = "5432"
     DBNAME = "todolist"
-    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://{0}:{1}@/{2}".format(
-        USER, PASSWORD, DBNAME
+    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://{0}:{1}@{2}:{3}/{4}".format(
+        USER, PASSWORD, HOST, PORT, DBNAME
     )
 
 

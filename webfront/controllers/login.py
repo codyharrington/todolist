@@ -1,4 +1,5 @@
 __author__ = 'cody'
+import flask
 from webfront import app, user_manager, login_manager
 from flask import render_template, flash, redirect
 from flask_login import login_user, logout_user, login_required
@@ -7,7 +8,10 @@ from utils.messages import *
 
 @login_manager.user_loader
 def load_user(username):
-    return user_manager.get_user(username)
+    # Cache the current user so we aren't always re-fetching it from the DB API
+    if not hasattr(flask.g, "current_user"):
+        flask.g.current_user = user_manager.get_user(username)
+    return flask.g.current_user
 
 # These doubled up routes could each just use one method, but for
 # clarity I've separate them out
@@ -59,4 +63,6 @@ def process_signup():
         if "err" not in response:
             flash(NEW_USER_CREATED.format(username))
             return redirect("/login")
+        else:
+            flash(response["err"])
     return redirect("/signup")
