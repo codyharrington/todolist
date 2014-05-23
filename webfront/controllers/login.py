@@ -10,6 +10,7 @@ from utils.messages import *
 def load_user(username):
     # Cache the current user so we aren't always re-fetching it from the DB API
     if not hasattr(flask.g, "current_user"):
+        print("HERE")
         flask.g.current_user = user_manager.get_user(username)
     return flask.g.current_user
 

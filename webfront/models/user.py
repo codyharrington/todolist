@@ -5,6 +5,8 @@ import requests
 from ujson import loads, dumps
 
 class LocalUser():
+    """A user here is really only a container for JSON, and an object for Flask-Login.
+    The real user is in the DB API"""
     data = {}
     enabled = True
 
@@ -36,19 +38,19 @@ class UserManager(RestClient):
         super().__init__(api_url)
 
     def get_user(self, username):
-        data, status = self.get_resource("user/{}".format(username))
+        response_obj, status = self.get_resource("user/{}".format(username))
         if status == HTTPStatusCodes.NOT_FOUND:
             return None
-        return LocalUser(data)
+        return LocalUser(response_obj)
 
     def create_user(self, username, password, email=""):
         data = {"username": username, "password": password, "email": email}
-        response_obj = self.put_resource("user", data=data)
+        response_obj, status = self.put_resource("user", data=data)
         return response_obj
 
     def delete_user(self, username):
-        data, status = self.delete_resource("user/{}".format(username))
-        return data
+        response_obj, status = self.delete_resource("user/{}".format(username))
+        return response_obj
 
     def authenticate_user(self, username, password):
         data = {"username": username, "password": password}

@@ -7,6 +7,7 @@ class Config():
 
 class Webfront(Config):
     DATABASE_URL = "http://localhost:5000"
+    LOGIN_URI = "/login"
 
 class Dbapi(Config):
     USER = "todolist"

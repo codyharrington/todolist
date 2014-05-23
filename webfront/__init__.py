@@ -9,6 +9,7 @@ app.secret_key = app.config["SECRET_KEY"]
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = app.config["LOGIN_URI"]
 
 from webfront.models.user import *
 user_manager = UserManager(app.config["DATABASE_URL"])

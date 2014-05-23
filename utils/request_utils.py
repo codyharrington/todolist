@@ -2,7 +2,7 @@ __author__ = 'cody'
 from flask import request
 
 def form_data(key):
-    if key in request.form:
+    if key in request.form and len(request.form[key]) > 0:
         return request.form[key]
     else:
         return None
