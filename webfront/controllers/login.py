@@ -10,7 +10,6 @@ from utils.messages import *
 def load_user(username):
     # Cache the current user so we aren't always re-fetching it from the DB API
     if not hasattr(flask.g, "current_user"):
-        print("HERE")
         flask.g.current_user = user_manager.get_user(username)
     return flask.g.current_user
 
@@ -62,7 +61,7 @@ def process_signup():
         email = "" if email is None else email
         response = user_manager.save_new_user(username, password, email)
         if "err" not in response:
-            flash(NEW_USER_CREATED.format(username))
+            flash(USER_CREATED)
             return redirect("/login")
         else:
             flash(response["err"])
