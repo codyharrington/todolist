@@ -2,15 +2,15 @@
  * Created by cody on 23/05/14.
  */
 module.exports = function (grunt) {
-    var jquery_js = "node_modules/jquery/dist/jquery.min.js";
-    var jquery_ui_js = "node_modules/jquery-ui/jquery-ui.js";
-    var bootstrap_js = "node_modules/twitter-bootstrap-3.0.0/dist/js/bootstrap.min.js";
+    var jquery_js = "bower_components/jquery/dist/jquery.min.js";
+    var jquery_ui_js = "bower_components/jquery-ui/jquery-ui.js";
+    var bootstrap_js = "bower_components/bootstrap/dist/js/bootstrap.min.js";
 
     var js_libs = [jquery_js, jquery_ui_js, bootstrap_js];
 
-    var jquery_ui_css = "node_modules/jquery-ui/themes/ui-darkness/jquery-ui.min.css";
-    var bootstrap_css = "node_modules/twitter-bootstrap-3.0.0/dist/css/bootstrap.min.css";
-    var bootstrap_theme_css = "node_modules/twitter-bootstrap-3.0.0/dist/css/bootstrap-theme.min.css";
+    var jquery_ui_css = "bower_components/jquery-ui/themes/ui-darkness/jquery-ui.min.css";
+    var bootstrap_css = "bower_components/bootstrap/dist/css/bootstrap.min.css";
+    var bootstrap_theme_css = "bower_components/bootstrap/dist/css/bootstrap-theme.min.css";
 
     var css_libs = [jquery_ui_css, bootstrap_css, bootstrap_theme_css];
 
@@ -19,7 +19,15 @@ module.exports = function (grunt) {
         clean: {
             js: ["js/libs/**/*"],
             css: ["css/libs/**/*"],
-            min: ["min/*"]
+            build: ["build/*"]
+        },
+        bower: {
+            install: {
+                options: {
+                    install: true,
+                    copy: false
+                }
+            }
         },
         copy: {
             main: {
@@ -30,32 +38,35 @@ module.exports = function (grunt) {
             }
         },
         concat: {
+            options: {
+                stripBanners: true
+            },
             dist: {
-                src: ["js/**/*.js", "!js/test/*"],
-                dest: "min/todolist.cat.js"
+                src: ["js/*.js", "!js/test/*"],
+                dest: "build/todolist.cat.js"
             }
         },
         uglify: {
             dist: {
                 files: {
-                    "min/todolist.min.js": ["min/todolist.cat.js"]
+                    "build/todolist.min.js": ["build/todolist.cat.js"]
                 }
             }
         },
         cssmin: {
             combine: {
                 files: {
-                    "min/todolist.cat.css": ["css/**/*.css"]
+                    "build/todolist.cat.css": ["css/*.css"]
                 }
             },
             minify: {
-                src: ["min/todolist.cat.css"],
-                dest: "min/todolist.min.css"
+                src: ["build/todolist.cat.css"],
+                dest: "build/todolist.min.css"
             }
         },
         watch: {
             files: ["js/*.js", "css/*.css"],
-            tasks: ["uglify", "jshint", "qunit"]
+            tasks: ["concat", "uglify", "cssmin", "jshint", "qunit"]
         },
         qunit: {
             files: ["js/test/**/*.html"]
@@ -70,10 +81,12 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-jshint");
     grunt.loadNpmTasks("grunt-contrib-cssmin");
     grunt.loadNpmTasks("grunt-contrib-watch");
-    grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-clean");
-//    grunt.loadNpmTasks("grunt-contrib-qunit");
+    grunt.loadNpmTasks("grunt-contrib-copy");
+    grunt.loadNpmTasks("grunt-bower-task");
+
+    //grunt.loadNpmTasks("grunt-contrib-qunit");
 
     grunt.registerTask("test", ["jshint", "qunit"]);
-    grunt.registerTask("default", ["clean", "copy", "jshint", "concat", "uglify", "cssmin" ]);
+    grunt.registerTask("default", ["clean", "bower", "copy", "jshint", "concat", "uglify", "cssmin" ]);
 };
