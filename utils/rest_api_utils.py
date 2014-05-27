@@ -45,51 +45,35 @@ class RestClient(object):
     def get_resource(self, uri):
         response = requests.get("{}/{}".format(self.api_url, uri.rstrip("/")))
         self._store_last(response.request, response)
-        if response.status_code == HTTPStatusCodes.NOT_FOUND:
-            raise NotFoundException
-        elif response.status_code == HTTPStatusCodes.INTERNAL_SERVER_ERROR:
-            raise InternalServerErrorException
-        else:
-            return loads(response.text), response.status_code
+        return loads(response.text), response.status_code
 
-    def post_resource(self, uri, data={}):
+    def post_resource(self, uri, data=None):
         response = requests.post("{}/{}".format(self.api_url, uri.lstrip("/")), data=dumps(data), headers=self.headers)
         self._store_last(response.request, response)
-        if response.status_code == HTTPStatusCodes.NOT_FOUND:
-            raise NotFoundException
-        elif response.status_code == HTTPStatusCodes.INTERNAL_SERVER_ERROR:
-            raise InternalServerErrorException
-        else:
-            return loads(response.text), response.status_code
+        return loads(response.text), response.status_code
 
-    def put_resource(self, uri, data={}):
+    def put_resource(self, uri, data=None):
         response = requests.put("{}/{}".format(self.api_url, uri.lstrip("/")), data=dumps(data), headers=self.headers)
         self._store_last(response.request, response)
-        if response.status_code == HTTPStatusCodes.NOT_FOUND:
-            raise NotFoundException
-        elif response.status_code == HTTPStatusCodes.INTERNAL_SERVER_ERROR:
-            raise InternalServerErrorException
-        else:
-            return loads(response.text), response.status_code
+        return loads(response.text), response.status_code
 
     def delete_resource(self, uri):
         response = requests.delete("{}/{}".format(self.api_url, uri.lstrip("/")))
         self._store_last(response.request, response)
-        if response.status_code == HTTPStatusCodes.NOT_FOUND:
-            raise NotFoundException
-        elif response.status_code == HTTPStatusCodes.INTERNAL_SERVER_ERROR:
-            raise InternalServerErrorException
-        else:
-            return loads(response.text), response.status_code
+        return loads(response.text), response.status_code
 
-def rest_jsonify(data={}, status=HTTPStatusCodes.OK, **kwargs):
+def rest_jsonify(data=None, status=HTTPStatusCodes.OK, **kwargs):
     """This method can take optional keyword arguments which will be added to the
     dictionary to convert to json. Good for adding err or message parameters"""
+    if data is None:
+        data = {}
     if len(kwargs) > 0:
         data.update(kwargs)
     return Response(dumps(data), mimetype="application/json", status=status)
 
-def validate_convert_request(request_data, required_headers=[]):
+def validate_convert_request(request_data, required_headers=None):
+    if required_headers is None:
+        required_headers = []
     try:
         data = loads(request_data.decode())
     except ValueError:

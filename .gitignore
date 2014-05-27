@@ -4,3 +4,5 @@
 __pycache__/
 node_modules/
 *.log
+*.cat.js
+*.cat.css

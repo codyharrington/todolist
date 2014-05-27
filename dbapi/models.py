@@ -34,13 +34,15 @@ class Base(object):
         return self.columnitems
 
     def fromdict(self, dict_obj):
+        dict_obj.__delitem__("id") if dict_obj.__contains__("id") else None
         [self.__setattr__(key, dict_obj[key]) for key in dict_obj.keys() if key in self.columns]
 
 # Define our schema
 
 class User(Base):
     __tablename__ = "user"
-    username = Column(String, primary_key=True)
+    id = Column(Integer, primary_key=True)
+    username = Column(String, unique=True)
     email = Column(String, unique=True)
     password = Column(String)
     salt = Column(String)
@@ -76,7 +78,7 @@ class Task(Base):
     start = Column(DateTime)
     end = Column(DateTime)
     desc = Column(String)
-    owner = Column(String, ForeignKey("user.username"), nullable=False)
+    userid = Column(Integer, ForeignKey("user.id"))
     required_fields = ["name"]
 
 

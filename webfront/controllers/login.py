@@ -60,7 +60,7 @@ def process_signup():
         flash(PASSWORDS_NOT_MATCH)
     else:
         email = "" if email is None else email
-        response = user_manager.create_user(username, password, email)
+        response = user_manager.save_new_user(username, password, email)
         if "err" not in response:
             flash(NEW_USER_CREATED.format(username))
             return redirect("/login")

@@ -3,6 +3,9 @@ __author__ = 'cody'
 class AlreadyExistsException(Exception):
     pass
 
+class UserAlreadyExistsException(Exception):
+    pass
+
 class NotFoundException(Exception):
     pass
 

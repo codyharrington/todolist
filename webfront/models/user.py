@@ -30,7 +30,7 @@ class LocalUser():
         self.data = data_obj
 
     def get_id(self):
-        return self.data["username"]
+        return self.data["id"]
 
 class UserManager(RestClient):
 
@@ -39,26 +39,38 @@ class UserManager(RestClient):
 
     def get_user(self, username):
         response_obj, status = self.get_resource("user/{}".format(username))
-        if status == HTTPStatusCodes.NOT_FOUND:
+        if status != HTTPStatusCodes.OK:
+            print(response_obj)
             return None
         return LocalUser(response_obj)
 
-    def create_user(self, username, password, email=""):
+    def save_new_user(self, username, password, email=""):
         data = {"username": username, "password": password, "email": email}
         response_obj, status = self.put_resource("user", data=data)
+        if status != HTTPStatusCodes.CREATED:
+            print(response_obj)
+        return response_obj
+
+    def update_existing_user(self, local_user):
+        data = local_user.data
+        response_obj, status = self.post_resource("user/{}".format(data["username"]))
+        if status != HTTPStatusCodes.OK:
+            print(response_obj)
         return response_obj
 
     def delete_user(self, username):
         response_obj, status = self.delete_resource("user/{}".format(username))
+        if status != HTTPStatusCodes.NO_CONTENT:
+            print(response_obj)
         return response_obj
 
     def authenticate_user(self, username, password):
         data = {"username": username, "password": password}
         response_obj, status = self.post_resource("user/authenticate", data=data)
-        if status == HTTPStatusCodes.UNAUTHORISED:
+        if status != HTTPStatusCodes.OK:
+            print(response_obj)
             return None
-        else:
-            return LocalUser(response_obj)
+        return LocalUser(response_obj)
 
 
 

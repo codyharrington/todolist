@@ -17,19 +17,31 @@ def create_new_user():
     data = validate_convert_request(request.data, required_headers=User.required_fields)
     user = flask.g.db_session.query(User).filter(User.username == data["username"]).first()
     if user is not None:
-        raise AlreadyExistsException
+        raise AlreadyExistsException(USER_ALREADY_EXISTS)
     else:
         user = User()
         user.fromdict(data)
         flask.g.db_session.add(user)
         flask.g.db_session.commit()
-        return rest_jsonify(message=NEW_USER_CREATED.format(user.username), status=HTTPStatusCodes.CREATED)
+        return rest_jsonify(message=USER_CREATED, status=HTTPStatusCodes.CREATED)
+
+@app.route("/user/<username>", methods=["POST"])
+def update_user(username):
+    data = validate_convert_request(request.data, required_headers=User.required_fields)
+    user = flask.g.db_session.query(User).filter(User.username == username).first()
+    if user is None:
+        raise NotFoundException(USER_NOT_FOUND)
+    else:
+        user.fromdict(data)
+        flask.g.db_session.merge(user)
+        flask.g.db_session.commit()
+        return rest_jsonify(message=RESOURCE_UPDATED, status=HTTPStatusCodes.OK)
 
 @app.route("/user/<username>", methods=["DELETE"])
 def delete_user(username):
     user = flask.g.db_session.query(User).filter(User.username == username).scalar()
     if user is None:
-        raise NotFoundException
+        raise NotFoundException(USER_NOT_FOUND)
     else:
         flask.g.db_session.delete(user)
         flask.g.db_session.commit()
@@ -39,7 +51,7 @@ def delete_user(username):
 def get_specific_user(username):
     user = flask.g.db_session.query(User).filter(User.username == username).scalar()
     if user is None:
-        raise NotFoundException
+        raise NotFoundException(USER_NOT_FOUND)
     else:
         return rest_jsonify(user.todict())
 
@@ -48,7 +60,7 @@ def authenticate_user():
     data = validate_convert_request(request.data, required_headers=["username", "password"])
     user = flask.g.db_session.query(User).filter(User.username == data["username"]).scalar()
     if user is None:
-        raise NotFoundException
+        raise NotFoundException(USER_NOT_FOUND)
     elif not user.check_password(data["password"]):
         raise AuthenticationFailureException
     else:
@@ -56,6 +68,6 @@ def authenticate_user():
 
 @app.route("/user/<username>/tasks", methods=["GET"])
 def get_user_tasks(username):
-    matching_tasks = [task.todict() for task in flask.g.db_session.query(Task).filter(Task.owner == username).all()]
+    matching_tasks = [task.todict() for task in flask.g.db_session.query(Task).join(Task.userid).filter(User.username == username).all()]
     return rest_jsonify(matching_tasks)
 
