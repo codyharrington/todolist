@@ -30,7 +30,7 @@ class LocalUser():
         self.data = data_obj
 
     def get_id(self):
-        return self.data["id"]
+        return self.data["username"]
 
 class UserManager(RestClient):
 
