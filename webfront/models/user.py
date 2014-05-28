@@ -1,17 +1,10 @@
 __author__ = 'cody'
-from webfront import app
+from webfront.models import LocalBase
 from utils.rest_api_utils import *
-import requests
-from ujson import loads, dumps
 
-class LocalUser():
-    """A user here is really only a container for JSON, and an object for Flask-Login.
-    The real user is in the DB API"""
-    data = {}
+class LocalUser(LocalBase):
+
     enabled = True
-
-    def __init__(self, data={}):
-        self.data = data
 
     def is_authenticated(self):
         # If a user isn't authenticated, we get None instead
@@ -26,11 +19,8 @@ class LocalUser():
         # We currently have no concept of anonymous users
         return False
 
-    def set_data(self, data_obj):
-        self.data = data_obj
-
     def get_id(self):
-        return self.data["username"]
+        return self["username"]
 
 class UserManager(RestClient):
 
@@ -42,7 +32,7 @@ class UserManager(RestClient):
         if status != HTTPStatusCodes.OK:
             print(response_obj)
             return None
-        return LocalUser(response_obj)
+        return LocalUser(response_obj["data"])
 
     def save_new_user(self, username, password, email=""):
         data = {"username": username, "password": password, "email": email}
@@ -52,8 +42,7 @@ class UserManager(RestClient):
         return response_obj
 
     def update_existing_user(self, local_user):
-        data = local_user.data
-        response_obj, status = self.post_resource("user/{}".format(data["username"]))
+        response_obj, status = self.post_resource("user/{}".format(local_user["username"]), data=local_user.copy())
         if status != HTTPStatusCodes.OK:
             print(response_obj)
         return response_obj
@@ -70,7 +59,7 @@ class UserManager(RestClient):
         if status != HTTPStatusCodes.OK:
             print(response_obj)
             return None
-        return LocalUser(response_obj)
+        return LocalUser(response_obj["data"])
 
 
 

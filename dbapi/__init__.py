@@ -46,3 +46,6 @@ app_bcrypt = Bcrypt(app)
 from dbapi.controllers.task import *
 from dbapi.controllers.user import *
 from dbapi.controllers.error import *
+
+from dbapi.models import  *
+Base.metadata.create_all(engine)

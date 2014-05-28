@@ -67,6 +67,8 @@ def rest_jsonify(data=None, status=HTTPStatusCodes.OK, **kwargs):
     dictionary to convert to json. Good for adding err or message parameters"""
     if data is None:
         data = {}
+    else:
+        data = {"data": data}
     if len(kwargs) > 0:
         data.update(kwargs)
     return Response(dumps(data), mimetype="application/json", status=status)

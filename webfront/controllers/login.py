@@ -26,12 +26,13 @@ def process_login():
     password = form_data("password")
 
     if username is None or password is None:
-        flash(EMPTY_USERNAME_OR_PASSWORD)
+        flash(EMPTY_USERNAME_OR_PASSWORD, category="warning")
     else:
         user = user_manager.authenticate_user(username, password)
         if user is None:
-            flash(INCORRECT_USERNAME_OR_PASSWORD)
+            flash(INCORRECT_USERNAME_OR_PASSWORD, category="error")
         else:
+            flash(LOGIN_SUCCESSFUL, category="success")
             login_user(user)
             return redirect("/")
     return redirect("/login")
@@ -54,15 +55,15 @@ def process_signup():
     email = form_data("email")
 
     if username is None or password is None or repassword is None:
-        flash(NOT_ALL_REQUIRED_FIELDS_RECEIVED)
+        flash(NOT_ALL_REQUIRED_FIELDS_RECEIVED, category="error")
     elif password != repassword:
-        flash(PASSWORDS_NOT_MATCH)
+        flash(PASSWORDS_NOT_MATCH, category="warning")
     else:
         email = "" if email is None else email
         response = user_manager.save_new_user(username, password, email)
         if "err" not in response:
-            flash(USER_CREATED)
+            flash(USER_CREATED, category="success")
             return redirect("/login")
         else:
-            flash(response["err"])
+            flash(response["err"], category="error")
     return redirect("/signup")

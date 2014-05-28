@@ -3,7 +3,7 @@
  */
 module.exports = function (grunt) {
     var jquery_js = "bower_components/jquery/dist/jquery.min.js";
-    var jquery_ui_js = "bower_components/jquery-ui/jquery-ui.js";
+    var jquery_ui_js = "bower_components/jquery-ui/ui/minified/jquery-ui.min.js";
     var bootstrap_js = "bower_components/bootstrap/dist/js/bootstrap.min.js";
 
     var js_libs = [jquery_js, jquery_ui_js, bootstrap_js];
@@ -42,7 +42,7 @@ module.exports = function (grunt) {
                 stripBanners: true
             },
             dist: {
-                src: ["js/*.js", "!js/test/*"],
+                src: ["js/**/*.js", "!js/test/*", "!js/libs/*"],
                 dest: "build/todolist.cat.js"
             }
         },
@@ -56,7 +56,7 @@ module.exports = function (grunt) {
         cssmin: {
             combine: {
                 files: {
-                    "build/todolist.cat.css": ["css/*.css"]
+                    "build/todolist.cat.css": ["css/**/*.css", "!css/libs/*"]
                 }
             },
             minify: {

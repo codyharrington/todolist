@@ -19,8 +19,7 @@ def create_new_user():
     if user is not None:
         raise AlreadyExistsException(USER_ALREADY_EXISTS)
     else:
-        user = User()
-        user.fromdict(data)
+        user = User(data)
         flask.g.db_session.add(user)
         flask.g.db_session.commit()
         return rest_jsonify(message=USER_CREATED, status=HTTPStatusCodes.CREATED)
@@ -65,9 +64,4 @@ def authenticate_user():
         raise AuthenticationFailureException
     else:
         return rest_jsonify(user.todict())
-
-@app.route("/user/<username>/tasks", methods=["GET"])
-def get_user_tasks(username):
-    matching_tasks = [task.todict() for task in flask.g.db_session.query(Task).join(Task.userid).filter(User.username == username).all()]
-    return rest_jsonify(matching_tasks)
 

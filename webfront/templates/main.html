@@ -1,7 +1,26 @@
 {% extends "dashboard_template.html" %}
 {% block dashboard_body %}
 <h1 class="page-header">Overview</h1>
-    <div class="row"></div>
+    <h3>Currently active tasks</h3>
+    <div class="container-fluid">
+    {% for task in tasks["active"] %}
+        <div class="row-fluid">{{ task.name }}</div>
+    {% endfor %}
+    </div>
+
+    <h3>Upcoming tasks</h3>
+    <div class="container-fluid">
+    {% for task in tasks["upcoming"] %}
+        <div class="row-fluid">{{ task.name }}</div>
+    {% endfor %}
+    </div>
+
+    <h3>Completed tasks</h3>
+    <div class="container-fluid">
+    {% for task in tasks["completed"] %}
+        <div class="row-fluid">{{ task.name }}</div>
+    {% endfor %}
+    </div>
 <div class="row">
 
 </div>

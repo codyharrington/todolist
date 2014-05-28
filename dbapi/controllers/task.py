@@ -20,8 +20,7 @@ def create_new_task():
     if task is not None:
         raise AlreadyExistsException(TASK_ALREADY_EXISTS)
     else:
-        task = Task()
-        task.fromdict(data)
+        task = Task(data)
         flask.g.db_session.add(task)
         flask.g.db_session.commit()
         return rest_jsonify(message=TASK_CREATED, status=HTTPStatusCodes.CREATED)

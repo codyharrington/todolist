@@ -1,6 +1,7 @@
 __author__ = 'cody'
 
 from sqlalchemy.ext.declarative import declarative_base as real_declarative_base
+from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from dbapi import app_bcrypt
 from bcrypt import gensalt
@@ -34,7 +35,8 @@ class Base(object):
         return self.columnitems
 
     def fromdict(self, dict_obj):
-        dict_obj.__delitem__("id") if dict_obj.__contains__("id") else None
+        forbidden_fields = ["id", "required_fields"]
+        [dict_obj.__delitem__(field) for field in forbidden_fields if field in dict_obj]
         [self.__setattr__(key, dict_obj[key]) for key in dict_obj.keys() if key in self.columns]
 
 # Define our schema
@@ -42,11 +44,17 @@ class Base(object):
 class User(Base):
     __tablename__ = "user"
     id = Column(Integer, primary_key=True)
-    username = Column(String, unique=True)
-    email = Column(String, unique=True)
-    password = Column(String)
-    salt = Column(String)
+    username = Column(String(10), nullable=False, unique=True)
+    email = Column(String(20), unique=True)
+    password = Column(String(100))
+    salt = Column(String(50))
+    tasks = relationship("Task")
     required_fields = ["username", "password"]
+
+    def __init__(self, dict_obj=None):
+        if dict_obj is None:
+            dict_obj = {}
+        self.fromdict(dict_obj)
 
     def set_password(self, password):
         self.salt = gensalt()
@@ -62,6 +70,10 @@ class User(Base):
             del data["password"]
         if "salt" in data:
             del data["salt"]
+        if "tasks" in data:
+            data["tasks"] = [task.todict() for task in data["tasks"]]
+        else:
+            data["tasks"] = []
         return data
 
     def fromdict(self, dict_obj):
@@ -69,16 +81,26 @@ class User(Base):
         # We want to make sure that the password is stored in the database as a hash
         if "password" in dict_obj:
             self.set_password(dict_obj["password"])
+        if "tasks" in dict_obj:
+            self.tasks = [Task(task) for task in dict_obj["tasks"]]
+        else:
+            self.tasks = []
 
 
 class Task(Base):
     __tablename__ = "task"
     id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
+    name = Column(String(50), nullable=False)
+    points = Column(Integer)
     start = Column(DateTime)
     end = Column(DateTime)
-    desc = Column(String)
+    desc = Column(String(1000))
     userid = Column(Integer, ForeignKey("user.id"))
     required_fields = ["name"]
+
+    def __init__(self, dict_obj=None):
+        if dict_obj is None:
+            dict_obj = {}
+        self.fromdict(dict_obj)
 
 
