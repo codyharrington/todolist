@@ -2,9 +2,13 @@
     display: block;
 }
 
-.login-signup-form {
-    margin-top: 25%;
+.centered-template-centre {
+    margin-top: 10%
 }
+
+.flash-message {
+}
+
 
 .login-signup-submit input {
     display: inline;
@@ -20,6 +24,11 @@
   -webkit-border-radius: 0 !important;
      -moz-border-radius: 0 !important;
           border-radius: 0 !important;
+}
+
+.no-side-padding {
+    padding-left: 0;
+    padding-right: 0;
 }
 
 

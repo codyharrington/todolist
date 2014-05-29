@@ -32,7 +32,7 @@ def process_login():
         if user is None:
             flash(INCORRECT_USERNAME_OR_PASSWORD, category="error")
         else:
-            flash(LOGIN_SUCCESSFUL, category="success")
+            # flash(LOGIN_SUCCESSFUL, category="success")
             login_user(user)
             return redirect("/")
     return redirect("/login")

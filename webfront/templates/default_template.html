@@ -10,13 +10,14 @@
     <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/jquery-ui.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/libs/jquery.validate.min.js') }}"></script>
     <script src="{{ url_for('static', filename='build/todolist.min.js') }}"></script>
 </head>
 <body>
 {% with errors = get_flashed_messages(category_filter=["error"]) %}
     {% if errors %}
         {% for error in errors %}
-        <div class="alert alert-danger">
+        <div class="alert alert-danger flash-message">
             {{ error }}
         </div>
         {% endfor %}
@@ -26,7 +27,7 @@
 {% with warnings = get_flashed_messages(category_filter=["warning"]) %}
     {% if warnings %}
         {% for warning in warnings %}
-        <div class="alert alert-warning">
+        <div class="alert alert-warning flash-message">
             {{ warning }}
         </div>
         {% endfor %}
@@ -37,7 +38,7 @@
 {% with messages = get_flashed_messages(category_filter=["message"]) %}
     {% if messages %}
         {% for message in messages %}
-        <div class="alert alert-info">
+        <div class="alert alert-info flash-message">
             {{ message }}
         </div>
         {% endfor %}
@@ -48,12 +49,13 @@
 {% with successes = get_flashed_messages(category_filter=["success"]) %}
     {% if successes %}
         {% for success in successes %}
-        <div class="alert alert-success">
+        <div class="alert alert-success flash-message">
             {{ success }}
         </div>
         {% endfor %}
     {% endif %}
 {% endwith %}
+
 {% block body %}
 {% endblock %}
 

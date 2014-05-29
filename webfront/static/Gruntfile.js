@@ -4,9 +4,10 @@
 module.exports = function (grunt) {
     var jquery_js = "bower_components/jquery/dist/jquery.min.js";
     var jquery_ui_js = "bower_components/jquery-ui/ui/minified/jquery-ui.min.js";
+    var jquery_validate_js = "bower_components/jquery-validation/dist/jquery.validate.min.js";
     var bootstrap_js = "bower_components/bootstrap/dist/js/bootstrap.min.js";
 
-    var js_libs = [jquery_js, jquery_ui_js, bootstrap_js];
+    var js_libs = [jquery_js, jquery_ui_js, jquery_validate_js, bootstrap_js];
 
     var jquery_ui_css = "bower_components/jquery-ui/themes/ui-darkness/jquery-ui.min.css";
     var bootstrap_css = "bower_components/bootstrap/dist/css/bootstrap.min.css";
