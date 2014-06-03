@@ -34,9 +34,8 @@ class UserManager(RestClient):
             return None
         return LocalUser(response_obj["data"])
 
-    def save_new_user(self, username, password, email=""):
-        data = {"username": username, "password": password, "email": email}
-        response_obj, status = self.put_resource("user", data=data)
+    def save_new_user(self, local_user):
+        response_obj, status = self.put_resource("user", data=local_user.copy())
         if status != HTTPStatusCodes.CREATED:
             print(response_obj)
         return response_obj

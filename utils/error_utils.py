@@ -1,7 +1,10 @@
 __author__ = 'cody'
 
 def handle_default_err_msg(msg, default):
-    if msg == "" or not isinstance(msg, str):
+    if msg is None or len(msg.args) == 0:
         return default
-    return msg
+    message = msg.args[0]
+    if not isinstance(message, str) or len(message) == 0:
+        return default
+    return message
 

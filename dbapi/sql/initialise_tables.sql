@@ -13,5 +13,6 @@ CREATE TABLE IF NOT EXISTS task (
   start TIMESTAMP,
   "end" TIMESTAMP,
   "desc" VARCHAR(1000),
+  "enabled" BOOLEAN,
   "userid" INT REFERENCES "user"(id)
 );

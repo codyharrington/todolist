@@ -9,6 +9,16 @@
 .flash-message {
 }
 
+.task-item-buttons {
+    display: inline;
+    float: right;
+}
+
+.task-item-text {
+    display: inline;
+    margin-left: 10px;
+}
+
 
 .login-signup-submit input {
     display: inline;

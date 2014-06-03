@@ -5,6 +5,7 @@ from flask import render_template, flash, redirect
 from flask_login import login_user, logout_user, login_required
 from utils.request_utils import *
 from utils.messages import *
+from webfront.models.user import LocalUser
 
 @login_manager.user_loader
 def load_user(username):
@@ -32,7 +33,7 @@ def process_login():
         if user is None:
             flash(INCORRECT_USERNAME_OR_PASSWORD, category="error")
         else:
-            # flash(LOGIN_SUCCESSFUL, category="success")
+            flash(LOGIN_SUCCESSFUL, category="success")
             login_user(user)
             return redirect("/")
     return redirect("/login")
@@ -59,8 +60,7 @@ def process_signup():
     elif password != repassword:
         flash(PASSWORDS_NOT_MATCH, category="warning")
     else:
-        email = "" if email is None else email
-        response = user_manager.save_new_user(username, password, email)
+        response = user_manager.save_new_user(LocalUser({"username": username, "password": password, "email": email}))
         if "err" not in response:
             flash(USER_CREATED, category="success")
             return redirect("/login")

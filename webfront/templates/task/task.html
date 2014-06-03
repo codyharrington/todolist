@@ -1,0 +1,46 @@
+{% extends "dashboard_template.html" %}
+{% block dashboard_body %}
+        <div>
+            <form id="task-form" method="POST" action="/task/add">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="name">Task name</label>
+                        <input type="text" name="name" id="name" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label for="desc">Description</label>
+                        <textarea name="desc" id="desc" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-4 no-side-padding">
+                        <label for="points">Enabled</label>
+                        <input type="checkbox" name="enabled" id="enabled" class="checkbox">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-1 no-side-padding">
+                        <label for="points">Points</label>
+                        <input type="number" name="points" id="points" class="form-control" min="0" max="100" value="0">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-lg">
+                        <input type="button" value="Cancel" class="btn btn-lg">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <script>
+            $(function() {
+                Task.validate();
+            });
+        </script>
+{% endblock %}

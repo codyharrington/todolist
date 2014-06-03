@@ -1,9 +1,9 @@
 import flask
-from flask import Flask
+from flask import Flask, current_app
 from flask_bcrypt import Bcrypt
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-from threading import Lock
+from multiprocessing import Lock
 from werkzeug.local import LocalProxy
 
 app = Flask(__name__)

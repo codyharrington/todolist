@@ -1,5 +1,8 @@
 {% extends "default_template.html" %}
 {% block body %}
+{% block messages %}
+{{ super() }}
+{% endblock %}
 
 <div class="container container-fluid">
     <div class="col-md-2 col-md-offset-5 centered-template-centre">

@@ -26,9 +26,8 @@ class TaskManager(RestClient):
             return None
         return [LocalTask(data) for data in response_obj["data"]]
 
-    def save_new_task(self, name, desc="", start=None, end=None, user=None):
-        data = {"name": name, "desc": desc, "start": start, "end": end, "userid": user}
-        response_obj, status = self.put_resource("task", data=data)
+    def save_new_task(self, local_task):
+        response_obj, status = self.put_resource("task", data=local_task.copy())
         if status != HTTPStatusCodes.CREATED:
             print(response_obj)
         return response_obj

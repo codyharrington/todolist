@@ -7,6 +7,11 @@ def form_data(key):
     else:
         return None
 
+def checkbox_value(key):
+    if key in request.form:
+        return True
+    return False
+
 def request_arg(key):
     if key in request.args:
         return request.args[key]

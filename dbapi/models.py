@@ -2,7 +2,7 @@ __author__ = 'cody'
 
 from sqlalchemy.ext.declarative import declarative_base as real_declarative_base
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean
 from dbapi import app_bcrypt
 from bcrypt import gensalt
 
@@ -48,7 +48,7 @@ class User(Base):
     email = Column(String(20), unique=True)
     password = Column(String(100))
     salt = Column(String(50))
-    tasks = relationship("Task")
+    tasks = relationship("Task", back_populates="user")
     required_fields = ["username", "password"]
 
     def __init__(self, dict_obj=None):
@@ -63,17 +63,18 @@ class User(Base):
     def check_password(self, password):
         return app_bcrypt.check_password_hash(self.password, self.salt + str(password))
 
-    def todict(self):
+    def todict(self, recurse=True):
         data = super().todict()
         # We don't want to reveal the salt or password
         if "password" in data:
             del data["password"]
         if "salt" in data:
             del data["salt"]
-        if "tasks" in data:
-            data["tasks"] = [task.todict() for task in data["tasks"]]
-        else:
-            data["tasks"] = []
+        if recurse:
+            if hasattr(self, "tasks"):
+                data["tasks"] = [task.todict(recurse=False) for task in self.tasks]
+            else:
+                data["tasks"] = []
         return data
 
     def fromdict(self, dict_obj):
@@ -83,24 +84,40 @@ class User(Base):
             self.set_password(dict_obj["password"])
         if "tasks" in dict_obj:
             self.tasks = [Task(task) for task in dict_obj["tasks"]]
-        else:
-            self.tasks = []
 
 
 class Task(Base):
     __tablename__ = "task"
     id = Column(Integer, primary_key=True)
     name = Column(String(50), nullable=False)
-    points = Column(Integer)
+    points = Column(Integer, default=0)
     start = Column(DateTime)
     end = Column(DateTime)
     desc = Column(String(1000))
+    enabled = Column(Boolean)
     userid = Column(Integer, ForeignKey("user.id"))
     required_fields = ["name"]
+
+    user = relationship("User", back_populates="tasks")
 
     def __init__(self, dict_obj=None):
         if dict_obj is None:
             dict_obj = {}
         self.fromdict(dict_obj)
+
+    def todict(self, recurse=True):
+        data = super().todict()
+        if recurse:
+            if hasattr(self, "user"):
+                data["user"] = self.user.todict(recurse=False)
+            else:
+                data["user"] = None
+        return data
+
+    def fromdict(self, dict_obj):
+        super().fromdict(dict_obj)
+        if "user" in dict_obj:
+            self.user = User(dict_obj["user"])
+
 
 

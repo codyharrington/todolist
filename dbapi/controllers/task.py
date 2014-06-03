@@ -13,10 +13,15 @@ def get_task(id):
         raise NotFoundException(TASK_NOT_FOUND)
     return rest_jsonify(task.todict())
 
+@app.route("/task", methods=["GET"])
+def get_all_tasks():
+    all_tasks = [task.todict() for task in flask.g.db_session.query(Task).all()]
+    return rest_jsonify(all_tasks)
+
 @app.route("/task", methods=["PUT"])
 def create_new_task():
     data = validate_convert_request(request.data)
-    task = flask.g.db_session.query(Task).filter(Task.id == id).scalar()
+    task = flask.g.db_session.query(Task).filter(Task.name == data["name"]).first()
     if task is not None:
         raise AlreadyExistsException(TASK_ALREADY_EXISTS)
     else:

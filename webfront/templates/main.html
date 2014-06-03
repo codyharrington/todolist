@@ -2,23 +2,50 @@
 {% block dashboard_body %}
 <h1 class="page-header">Overview</h1>
     <h3>Currently active tasks</h3>
-    <div class="container-fluid">
+    <div class="list-group display-empty">
     {% for task in tasks["active"] %}
-        <div class="row-fluid flash-message navbar-fixed-top">{{ task.name }}</div>
-    {% endfor %}
-    </div>
-
-    <h3>Upcoming tasks</h3>
-    <div class="container-fluid">
-    {% for task in tasks["upcoming"] %}
-        <div class="row-fluid flash-message navbar-fixed-top">{{ task.name }}</div>
+        <div class="list-group-item list-group-item-info" id="{{ task.id }}">
+            <span class="badge pull-left">{{ task.points }}</span>
+            <div class="list-group-item-text task-item-text">
+                {{ task.name }}
+            </div>
+            <div class="list-group-item-text task-item-buttons btn-group">
+                <a class="btn btn-default btn-xs" href="/task/edit/{{ task.id }}">Edit</a>
+                <a class="btn btn-default btn-xs" href="/task/delete/{{ task.id }}">Delete</a>
+            </div>
+        </div>
     {% endfor %}
     </div>
 
     <h3>Completed tasks</h3>
-    <div class="container-fluid">
+    <div class="list-group display-empty">
     {% for task in tasks["completed"] %}
-        <div class="row-fluid flash-message navbar-fixed-top">{{ task.name }}</div>
+        <div class="list-group-item list-group-item-success" id="{{ task.id }}">
+            <span class="badge pull-left">{{ task.points }}</span>
+            <div class="list-group-item-text task-item-text">
+                {{ task.name }}
+            </div>
+            <div class="list-group-item-text task-item-buttons btn-group">
+                <a class="btn btn-default btn-xs" href="/task/edit/{{ task.id }}">Edit</a>
+                <a class="btn btn-default btn-xs" href="/task/delete/{{ task.id }}">Delete</a>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+    <h3>Inactive tasks</h3>
+    <div class="list-group display-empty">
+    {% for task in tasks["inactive"] %}
+        <div class="list-group-item" id="{{ task.id }}">
+            <span class="badge pull-left">{{ task.points }}</span>
+            <div class="list-group-item-heading task-item-text">
+                {{ task.name }}
+            </div>
+            <div class="list-group-item-text task-item-buttons btn-group">
+                <a class="btn btn-default btn-xs" href="/task/edit/{{ task.id }}">Edit</a>
+                <a class="btn btn-default btn-xs" href="/task/delete/{{ task.id }}">Delete</a>
+            </div>
+        </div>
     {% endfor %}
     </div>
 <div class="row">

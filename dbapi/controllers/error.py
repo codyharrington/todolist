@@ -25,12 +25,14 @@ def insufficient_fields(e):
 @app.errorhandler(NotFoundException)
 def not_found(e):
     traceback.print_exc()
-    return rest_jsonify(err=handle_default_err_msg(e, RESOURCE_NOT_FOUND), status=HTTPStatusCodes.NOT_FOUND)
+    return rest_jsonify(err=handle_default_err_msg(e, RESOURCE_NOT_FOUND),
+                        status=HTTPStatusCodes.NOT_FOUND)
 
 @app.errorhandler(AlreadyExistsException)
 def already_exists(e):
     traceback.print_exc()
-    return rest_jsonify(err=handle_default_err_msg(e, RESOURCE_ALREADY_EXISTS), status=HTTPStatusCodes.FORBIDDEN)
+    return rest_jsonify(err=handle_default_err_msg(e, RESOURCE_ALREADY_EXISTS),
+                        status=HTTPStatusCodes.FORBIDDEN)
 
 @app.errorhandler(NoDataException)
 def no_data(e):
