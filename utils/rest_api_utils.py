@@ -45,22 +45,34 @@ class RestClient(object):
     def get_resource(self, uri):
         response = requests.get("{}/{}".format(self.api_url, uri.rstrip("/")))
         self._store_last(response.request, response)
-        return loads(response.text), response.status_code
+        response_text = response.text
+        if len(response_text) == 0:
+            return {"message": "No data"}, HTTPStatusCodes.NO_CONTENT
+        return loads(response_text), response.status_code
 
     def post_resource(self, uri, data=None):
         response = requests.post("{}/{}".format(self.api_url, uri.lstrip("/")), data=dumps(data), headers=self.headers)
         self._store_last(response.request, response)
-        return loads(response.text), response.status_code
+        response_text = response.text
+        if len(response_text) == 0:
+            return {"message": "No data"}, HTTPStatusCodes.NO_CONTENT
+        return loads(response_text), response.status_code
 
     def put_resource(self, uri, data=None):
         response = requests.put("{}/{}".format(self.api_url, uri.lstrip("/")), data=dumps(data), headers=self.headers)
         self._store_last(response.request, response)
-        return loads(response.text), response.status_code
+        response_text = response.text
+        if len(response_text) == 0:
+            return {"message": "No data"}, HTTPStatusCodes.NO_CONTENT
+        return loads(response_text), response.status_code
 
     def delete_resource(self, uri):
         response = requests.delete("{}/{}".format(self.api_url, uri.lstrip("/")))
         self._store_last(response.request, response)
-        return loads(response.text), response.status_code
+        response_text = response.text
+        if len(response_text) == 0:
+            return {"message": "No data"}, HTTPStatusCodes.NO_CONTENT
+        return loads(response_text), response.status_code
 
 def rest_jsonify(data=None, status=HTTPStatusCodes.OK, **kwargs):
     """This method can take optional keyword arguments which will be added to the

@@ -5,6 +5,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean
 from dbapi import app_bcrypt
 from bcrypt import gensalt
+from datetime import datetime
 
 
 # The below code was taken from
@@ -82,8 +83,6 @@ class User(Base):
         # We want to make sure that the password is stored in the database as a hash
         if "password" in dict_obj:
             self.set_password(dict_obj["password"])
-        if "tasks" in dict_obj:
-            self.tasks = [Task(task) for task in dict_obj["tasks"]]
 
 
 class Task(Base):
@@ -94,7 +93,6 @@ class Task(Base):
     start = Column(DateTime)
     end = Column(DateTime)
     desc = Column(String(1000))
-    enabled = Column(Boolean)
     userid = Column(Integer, ForeignKey("user.id"))
     required_fields = ["name"]
 
@@ -116,8 +114,10 @@ class Task(Base):
 
     def fromdict(self, dict_obj):
         super().fromdict(dict_obj)
-        if "user" in dict_obj:
-            self.user = User(dict_obj["user"])
+        if "start" in dict_obj and dict_obj["start"] is not None:
+            self.start = datetime.utcfromtimestamp(dict_obj["start"])
+        if "end" in dict_obj and dict_obj["end"] is not None:
+            self.end = datetime.utcfromtimestamp(dict_obj["end"])
 
 
 

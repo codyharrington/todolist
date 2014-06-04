@@ -1,39 +1,33 @@
 {% extends "dashboard_template.html" %}
 {% block dashboard_body %}
         <div>
-            <form id="task-form" method="POST" action="/task/add">
+            <form id="task-form" method="POST">
                 <div class="row">
                     <div class="form-group">
                         <label for="name">Task name</label>
-                        <input type="text" name="name" id="name" class="form-control">
+                        <input type="text" name="name" id="name" class="form-control" value="{{ task['name'] }}">
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="form-group">
                         <label for="desc">Description</label>
-                        <textarea name="desc" id="desc" class="form-control"></textarea>
+                        <textarea name="desc" id="desc" class="form-control">{{ task["desc"] }}</textarea>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="form-group col-md-4 no-side-padding">
-                        <label for="points">Enabled</label>
-                        <input type="checkbox" name="enabled" id="enabled" class="checkbox">
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group col-md-1 no-side-padding">
+                    <div class="form-group col-xs-1 no-side-padding">
                         <label for="points">Points</label>
-                        <input type="number" name="points" id="points" class="form-control" min="0" max="100" value="0">
+                        <input type="number" name="points" id="points" class="form-control" min="0" max="100"
+                               value="{% if 'points' not in task %}0{% else %}{{ task['points'] }}{% endif %}">
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-lg">
-                        <input type="button" value="Cancel" class="btn btn-lg">
+                        <input type="submit" value="Save" class="btn btn-lg btn-success">
+                        <a class="btn btn-lg btn-default" href="/">Cancel</a>
                     </div>
                 </div>
             </form>

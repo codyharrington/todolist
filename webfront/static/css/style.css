@@ -41,6 +41,17 @@
     padding-right: 0;
 }
 
+.points-box {
+    float: left;
+    margin-top: -10px;
+    font-size: 30px;
+}
+
+.completed-task {
+    border-color: #4cae4c;
+}
+
+
 
 
 

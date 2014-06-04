@@ -27,13 +27,13 @@ class TaskManager(RestClient):
         return [LocalTask(data) for data in response_obj["data"]]
 
     def save_new_task(self, local_task):
-        response_obj, status = self.put_resource("task", data=local_task.copy())
+        response_obj, status = self.post_resource("task", data=local_task.copy())
         if status != HTTPStatusCodes.CREATED:
             print(response_obj)
         return response_obj
 
     def update_existing_task(self, local_task):
-        response_obj, status = self.post_resource("/task/{}".format(local_task["id"]), data=local_task.copy())
+        response_obj, status = self.put_resource("/task/{}".format(local_task["id"]), data=local_task.copy())
         if status != HTTPStatusCodes.OK:
             print(response_obj)
         return response_obj
@@ -41,6 +41,12 @@ class TaskManager(RestClient):
     def delete_task(self, task_id):
         response_obj, status = self.delete_resource("/task/{}".format(task_id))
         if status != HTTPStatusCodes.NO_CONTENT:
+            print(response_obj)
+        return response_obj
+
+    def finish_task(self, task_id):
+        response_obj, status = self.post_resource("/task/{}/finish".format(task_id))
+        if status != HTTPStatusCodes.OK:
             print(response_obj)
         return response_obj
 

@@ -29,4 +29,5 @@ TASK_NOT_FOUND = "Task not found"
 TASK_CREATED = "New task created successfully"
 
 LOGIN_SUCCESSFUL = "Login successful"
+UPDATE_SUCCESSFUL = "Update successful"
 

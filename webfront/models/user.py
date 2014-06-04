@@ -35,13 +35,13 @@ class UserManager(RestClient):
         return LocalUser(response_obj["data"])
 
     def save_new_user(self, local_user):
-        response_obj, status = self.put_resource("user", data=local_user.copy())
+        response_obj, status = self.post_resource("user", data=local_user.copy())
         if status != HTTPStatusCodes.CREATED:
             print(response_obj)
         return response_obj
 
     def update_existing_user(self, local_user):
-        response_obj, status = self.post_resource("user/{}".format(local_user["username"]), data=local_user.copy())
+        response_obj, status = self.put_resource("user/{}".format(local_user["username"]), data=local_user.copy())
         if status != HTTPStatusCodes.OK:
             print(response_obj)
         return response_obj

@@ -24,7 +24,7 @@ def create_new_user():
         flask.g.db_session.commit()
         return rest_jsonify(message=USER_CREATED, status=HTTPStatusCodes.CREATED)
 
-@app.route("/user/<username>", methods=["POST"])
+@app.route("/user/<username>", methods=["POST", "PUT"])
 def update_user(username):
     data = validate_convert_request(request.data, required_headers=User.required_fields)
     user = flask.g.db_session.query(User).filter(User.username == username).first()
