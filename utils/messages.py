@@ -34,3 +34,12 @@ LOGIN_SUCCESSFUL = "Login successful"
 UPDATE_SUCCESSFUL = "Update successful"
 PASSWORDS_CHANGED_SUCCESSFULLY = "Passwords changed successfully"
 
+recaptcha_messages = {
+    "invalid-site-private-key": "ReCAPTCHA Error",
+    "invalid-request-cookie": "ReCAPTCHA Error",
+    "incorrect-captcha-sol": "You seem to have mistyped the ReCAPTCHA text",
+    "captcha-timeout": "This ReCAPTCHA text is no longer valid",
+    "recaptcha-not-reachable": "Could not reach reCAPTCHA servers. Check your connection and try again",
+    "success": "Recaptcha was successful"
+}
+

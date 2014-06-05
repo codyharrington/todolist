@@ -1,17 +1,43 @@
 {% extends "centered_template.html" %}
 {% block centered_body %}
+
+{% if recaptcha_enabled %}
+<script type="text/javascript" src="https://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
+{% endif %}
+
   <form id="sign-up-form" class="login-signup-form form-group" action="/signup" method="POST">
-        <div class="row login-fields">
+
+      <!-- A bit of a honey pot trick -->
+        <div class="honey-fields">
+            <span>Do not enter any text into these fields. Use the others only.</span>
             <input type="text" id="username" name="username" placeholder="Desired username" class="form-control">
             <input type="password" id="password" name="password" placeholder="Password" class="form-control">
             <input type="password" id="repassword" name="repassword" placeholder="Confirm password" class="form-control">
             <input type="text" id="email" name="email" placeholder="Email (Optional)" class="form-control">
         </div>
+        <div class="row login-fields">
+            <input type="text" id="nick" name="nick" placeholder="Desired username" class="form-control">
+            <input type="password" id="key" name="key" placeholder="Password" class="form-control">
+            <input type="password" id="rekey" name="rekey" placeholder="Confirm password" class="form-control">
+            <input type="text" id="addy" name="addy" placeholder="Email (Optional)" class="form-control">
+        </div>
+
+      {% if recaptcha_enabled %}
+      <div class="input-group login-signup-recaptcha row">
+          <div id="captcha">
+          </div>
+          <label>We need to prove you're not a bot.</label>
+      </div>
+      {% endif %}
+
         <div class="row login-signup-submit">
             <input type="submit" id="register" value="Register" class="btn btn-lg btn-primary">
         </div>
         <div class="row login-signup-other">
             <a href="/login">Log in</a>
         </div>
-    </form>
+</form>
+<script>
+    Main.generateRecaptcha("{{ recaptcha_pub_key }}", "captcha", "sign-up-form");
+</script>
 {% endblock %}

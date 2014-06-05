@@ -17,3 +17,23 @@ def request_arg(key):
         return request.args[key]
     else:
         return None
+
+def honeypot_fields_used(fields):
+    field_values = [form_data(field) for field in fields]
+
+    for value in field_values:
+        if value not in ["", None]:
+            return True
+    return False
+
+
+
+
+
+
+
+
+
+
+
+

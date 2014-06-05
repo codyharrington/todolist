@@ -1,12 +1,26 @@
 {% extends "centered_template.html" %}
 {% block centered_body %}
-
+{% if recaptcha_enabled %}
+    <script type="text/javascript" src="https://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
+{% endif %}
 
     <form id="login-form" class="login-signup-form form-group" action="/login" method="POST">
-        <div class="row login-fields">
+        <div class="honey-fields">
+            Do not enter any text into these fields. Only use the other fields.
             <input type="text" id="username" name="username" placeholder="Username" class="form-control">
             <input type="password" id="password" name="password" placeholder="Password" class="form-control">
         </div>
+        <div class="row login-fields">
+            <input type="text" id="nick" name="nick" placeholder="Username" class="form-control">
+            <input type="password" id="key" name="key" placeholder="Password" class="form-control">
+        </div>
+        {% if recaptcha_enabled %}
+            <div class="input-group login-signup-recaptcha row">
+            <div id="captcha">
+            </div>
+                <label>We need to prove you're not a bot.</label>
+            </div>
+        {% endif %}
         <div class="row login-signup-submit">
             <input type="submit" id="sign-in" value="Log in" class="btn btn-lg btn-primary">
         </div>
@@ -14,6 +28,10 @@
             <a href="/signup">Sign up</a>
         </div>
     </form>
-
+{% if recaptcha_enabled %}
+    <script>
+        Main.generateRecaptcha("{{ recaptcha_pub_key }}", "captcha", "login-form");
+    </script>
+{% endif %}
 {% endblock %}
 

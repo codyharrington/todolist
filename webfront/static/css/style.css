@@ -3,7 +3,7 @@
 }
 
 .centered-template-centre {
-    margin-top: 10%
+    margin-top: 5%
 }
 
 .flash-message {
@@ -49,6 +49,14 @@
 
 .completed-task {
     border-color: #4cae4c;
+}
+
+.honey-fields {
+    display: none;
+}
+
+.login-signup-recaptcha {
+    padding-top: 15px;
 }
 
 
