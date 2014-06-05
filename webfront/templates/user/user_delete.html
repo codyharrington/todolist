@@ -1,0 +1,30 @@
+{% extends "dashboard_template.html" %}
+{% set active_page = "delete-user" %}
+{% block dashboard_body %}
+        <div>
+
+            <form id="task-form" method="POST">
+                <div class="row">
+                    <div class="form-group">
+                        <div>
+                            You are about to delete your account. This is <strong>permanent and irreversible</strong>. Your account
+                            will be deleted when you click the button below. All user data is deleted.
+                        </div><br>
+                        <div class="input-group">
+                            <label for="password">To confirm, please enter your password.</label>
+                            <input type="password" name="password" id="password" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="form-group">
+                        <input type="submit" id="submit" value="Yes, I want to delete my account" class="btn btn-lg btn-danger">
+                        <a class="btn btn-lg btn-default" href="/">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+{% endblock %}

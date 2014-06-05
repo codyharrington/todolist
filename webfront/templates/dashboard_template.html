@@ -16,9 +16,6 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="/logout">Logout</a></li>
           </ul>
-          <!--<form class="navbar-form navbar-right">-->
-            <!--<input type="text" class="form-control" placeholder="Search...">-->
-          <!--</form>-->
         </div>
       </div>
     </div>
@@ -26,8 +23,14 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
+          <h4>Task settings</h4>
           <ul class="nav nav-sidebar">
-            <li><a href="/task/add">Add new task</a></li>
+              <li id="add-task"><a href="/task/add">Add new task</a></li>
+          </ul>
+          <h4>User settings</h4>
+          <ul class="nav nav-sidebar">
+              <li id="change-password"><a href="/user/repassword">Change password</a></li>
+              <li id="delete-user"><a href="/user/delete">Delete user</a></li>
           </ul>
         </div>
           <div class="col-sm-offset-3 col-md-offset-2">
@@ -39,4 +42,7 @@
       </div>
     </div>
 </div>
+<script>
+    Main.setActiveNav("{{ active_page }}");
+</script>
 {% endblock %}

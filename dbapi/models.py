@@ -49,7 +49,7 @@ class User(Base):
     email = Column(String(20), unique=True)
     password = Column(String(100))
     salt = Column(String(50))
-    tasks = relationship("Task", back_populates="user")
+    tasks = relationship("Task", cascade="all, delete-orphan", back_populates="user")
     required_fields = ["username", "password"]
 
     def __init__(self, dict_obj=None):

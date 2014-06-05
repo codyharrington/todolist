@@ -20,4 +20,6 @@ task_manager = TaskManager(app.config["DATABASE_URL"])
 from webfront.controllers.main import *
 from webfront.controllers.login import *
 from webfront.controllers.error import *
+from webfront.controllers.task import *
+from webfront.controllers.user import *
 

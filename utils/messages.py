@@ -23,11 +23,14 @@ PASSWORDS_NOT_MATCH = "The supplied passwords do not match"
 USER_ALREADY_EXISTS = "User already exists"
 USER_NOT_FOUND = "User not found"
 USER_CREATED = "New user created successfully. You may now log in"
+USER_DELETED = "User deleted"
 
 TASK_ALREADY_EXISTS = "Task already exists"
 TASK_NOT_FOUND = "Task not found"
 TASK_CREATED = "New task created successfully"
+TASK_DELETED = "Task deleted"
 
 LOGIN_SUCCESSFUL = "Login successful"
 UPDATE_SUCCESSFUL = "Update successful"
+PASSWORDS_CHANGED_SUCCESSFULLY = "Passwords changed successfully"
 
