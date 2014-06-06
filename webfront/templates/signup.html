@@ -37,7 +37,9 @@
             <a href="/login">Log in</a>
         </div>
 </form>
+{% if recaptcha_enabled %}
 <script>
     Main.generateRecaptcha("{{ recaptcha_pub_key }}", "captcha", "sign-up-form");
 </script>
+{% endif %}
 {% endblock %}

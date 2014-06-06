@@ -18,7 +18,11 @@ Requirements
 
 Configuration
 -----------------
-To set up, simply modify config.py and change the Dbapi parameters.
+To set up, simply modify config.py and change the Dbapi parameters. You can also use a local_config.py
+which has the same layout as config.py. Any values in this local_config will overwrite the same ones in config.py,
+and local_config.py is in the gitignore, so you can put sensitive configuration values there that you don't want
+committed.
+
 Take a look inside rundbapi.py and runwebfront.py to adjust ports, etc
 
 Installation
