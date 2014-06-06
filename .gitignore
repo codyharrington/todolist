@@ -8,3 +8,5 @@ node_modules/
 *.cat.css
 bower_components/
 local_config.py
+conf/
+venv/
