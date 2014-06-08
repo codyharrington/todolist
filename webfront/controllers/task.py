@@ -22,7 +22,7 @@ def process_new_task():
     new_task = LocalTask()
     new_task["name"] = name
     new_task["desc"] = form_data("desc")
-    new_task["points"] = form_data("points")
+    new_task["points"] = int(form_data("points")) if form_data("points") is not None and form_data("points").isdigit() else 0
     new_task["userid"] = current_user["id"]
     new_task["start"] = datetime.now()
 
