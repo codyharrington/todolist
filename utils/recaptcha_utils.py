@@ -18,5 +18,5 @@ def check_recaptcha(private_key, verification_url):
     response = requests.post(verification_url, data)
     values = response.text.split("\n")
 
-    return values[0], recaptcha_messages(values[1])
+    return values[0], recaptcha_messages[values[1]]
 
