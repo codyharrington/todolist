@@ -45,8 +45,8 @@ class Base(object):
 class User(Base):
     __tablename__ = "user"
     id = Column(Integer, primary_key=True)
-    username = Column(String(10), nullable=False, unique=True)
-    email = Column(String(20), unique=True)
+    username = Column(String(100), nullable=False, unique=True)
+    email = Column(String(100), unique=True)
     password = Column(String(100))
     salt = Column(String(50))
     tasks = relationship("Task", cascade="all, delete-orphan", back_populates="user")
