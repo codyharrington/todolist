@@ -1,6 +1,10 @@
 import flask
+import os
+import logging
+from logging import Formatter
 from flask import Flask, current_app
 from flask_bcrypt import Bcrypt
+from logging.handlers import RotatingFileHandler
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from multiprocessing import Lock
@@ -8,6 +12,13 @@ from werkzeug.local import LocalProxy
 
 app = Flask(__name__)
 app.config.from_object("config.Dbapi")
+
+log_handler = RotatingFileHandler(os.path.join(app.config["LOG_DIRECTORY"], __name__),
+                                  maxBytes=app.config["MAX_LOG_BYTES"], backupCount=1)
+log_handler.setLevel(logging.INFO)
+log_handler.setFormatter(Formatter(app.config["LOG_FORMAT_STRING"]))
+app.logger.addHandler(log_handler)
+
 engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], convert_unicode=True)
 
 lock = Lock()

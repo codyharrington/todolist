@@ -7,12 +7,12 @@
     <form id="login-form" class="login-signup-form form-group" action="/login" method="POST">
         <div class="honey-fields">
             Do not enter any text into these fields. Only use the other fields.
-            <input type="text" id="username" name="username" placeholder="Username" class="form-control">
-            <input type="password" id="password" name="password" placeholder="Password" class="form-control">
-        </div>
-        <div class="row login-fields">
             <input type="text" id="nick" name="nick" placeholder="Username" class="form-control">
             <input type="password" id="key" name="key" placeholder="Password" class="form-control">
+        </div>
+        <div class="row login-fields">
+            <input type="text" id="username" name="username" placeholder="Username" class="form-control">
+            <input type="password" id="password" name="password" placeholder="Password" class="form-control">
         </div>
         {% if recaptcha_enabled %}
             <div class="input-group login-signup-recaptcha row">

@@ -4,6 +4,9 @@ class Config():
     """Base configuration class. Any variable set here is loaded in all apps"""
     DEBUG = True
     SECRET_KEY = "1234"
+    LOG_DIRECTORY = "/tmp"
+    LOG_FORMAT_STRING = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    MAX_LOG_BYTES = 10000
 
 class Webfront(Config):
     DATABASE_URL = "http://localhost:5000"

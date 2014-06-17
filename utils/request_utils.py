@@ -26,6 +26,11 @@ def honeypot_fields_used(fields):
             return True
     return False
 
+def check_fields_empty(*fields):
+    for field in fields:
+        if field is None or len(field) == 0:
+            return True
+    return False
 
 
 

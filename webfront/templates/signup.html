@@ -10,16 +10,16 @@
       <!-- A bit of a honey pot trick -->
         <div class="honey-fields">
             <span>Do not enter any text into these fields. Use the others only.</span>
-            <input type="text" id="username" name="username" placeholder="Desired username" class="form-control">
-            <input type="password" id="password" name="password" placeholder="Password" class="form-control">
-            <input type="password" id="repassword" name="repassword" placeholder="Confirm password" class="form-control">
-            <input type="text" id="email" name="email" placeholder="Email (Optional)" class="form-control">
-        </div>
-        <div class="row login-fields">
             <input type="text" id="nick" name="nick" placeholder="Desired username" class="form-control">
             <input type="password" id="key" name="key" placeholder="Password" class="form-control">
             <input type="password" id="rekey" name="rekey" placeholder="Confirm password" class="form-control">
             <input type="text" id="addy" name="addy" placeholder="Email (Optional)" class="form-control">
+        </div>
+        <div class="row login-fields">
+            <input type="text" id="username" name="username" placeholder="Desired username" class="form-control">
+            <input type="password" id="password" name="password" placeholder="Password" class="form-control">
+            <input type="password" id="repassword" name="repassword" placeholder="Confirm password" class="form-control">
+            <input type="text" id="email" name="email" placeholder="Email (Optional)" class="form-control">
         </div>
 
       {% if recaptcha_enabled %}

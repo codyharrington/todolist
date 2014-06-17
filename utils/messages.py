@@ -16,7 +16,9 @@ INTERNAL_EXCEPTION = "There has been an internal exception."
 AUTHENTICATION_FAILURE = "Authentication failed"
 
 EMPTY_USERNAME_OR_PASSWORD = "Username or password is missing"
+EMPTY_CAPTCHA = "You seem to have forgotten to fill out the reCAPTCHA"
 INCORRECT_USERNAME_OR_PASSWORD = "Incorrect username or password"
+DUMMY_FIELD_DATA = "You seem to have put data into the dummy fields. Please leave these fields empty on submission"
 NOT_ALL_REQUIRED_FIELDS_RECEIVED = "Not all required fields have been filled in"
 PASSWORDS_NOT_MATCH = "The supplied passwords do not match"
 

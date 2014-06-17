@@ -3,7 +3,6 @@ from webfront.models import LocalBase
 from utils.rest_api_utils import *
 
 class LocalUser(LocalBase):
-
     enabled = True
 
     def is_authenticated(self):
