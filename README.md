@@ -9,12 +9,16 @@ These installation instructions will probably be simplified at a later date. The
 
 Requirements
 ---------------
-* PostgreSQL
+You'll need to make sure all of the following packages are installed on your system before you continue:
+* postgresql
 * git
-* npm from Node.js
-* Grunt
-* Python 3 and pip
-* virtualenv
+* nodejs
+* npm (usually comes with nodejs)
+* python3
+* python3-pip
+* python-virtualenv
+* python-dev
+* build-essential (This may be optional; distros like Arch Linux do not require it)
 
 Configuration
 -----------------
@@ -27,18 +31,33 @@ Take a look inside rundbapi.py and runwebfront.py to adjust ports, etc
 
 Installation
 -------------
-You'll want to enter your virtualenv here if you are going to use one
+Once everything is configured, installing the dependencies is straightforward.
+
+We create a virtualenv:
+```sh
+virtualenv venv
+```
+Activate the virtualenv:
+```sh
+source venv/bin/activate
+```
+Install python dependencies
 ```sh
 pip install -r requirements.txt
+```
+Install javascript dependencies
+```sh
 cd webfront/static
 npm install
 grunt
-cd ..
 ```
+...and we're done (assuming there were no errors).
 
 Running the app(s):
 --------------
 Running is quite simple. The database is abstracted behind a REST API, so runs in a separate Flask app. This means that you have to have them both running for it to work. You'll also want to run them in separate terminals.
+
+Note that you'll need to activate the virtualenv for both of these applications
 
 ##### Database #####
 ```sh
@@ -49,6 +68,15 @@ python3 rundbapi.py
 python3 runwebfront.py
 ```
 
-Contact
+About the database ReST API
+---------------------------
+The database has been abstracted away into a separate application, and all queries and commits
+are performed via JSON to and from different URIs. It follows that serialisation and de-serialisation happens at
+each end.
+
+The reason for doing this is so I can potentially implement a different database backend, possibly even
+in a different language. An API spec will be written up soon.
+
+Issues
 ----------------
 If you have any issues, log them on my github: https://github.com/codyharrington/todolist
