@@ -3,7 +3,7 @@ Todolist
 
 This software is licensed under the MIT License. See LICENSE file for details.
 
-This is my soon-to-be-deployed task tracking software. If you'd like to try it out for yourself, read on.
+This is task tracking software. If you'd like to try it out for yourself, read on.
 
 These installation instructions will probably be simplified at a later date. They have only been tested on a Linux system.
 
