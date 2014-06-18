@@ -1,6 +1,5 @@
 Todolist
 =============
-
 This software is licensed under the MIT License. See LICENSE file for details.
 
 This is task tracking software. If you'd like to try it out for yourself, read on.
@@ -31,19 +30,20 @@ Take a look inside rundbapi.py and runwebfront.py to adjust ports, etc
 
 Installation
 -------------
-Once everything is configured, installing the dependencies is straightforward.
+Once everything is configured, installing the dependencies is straightforward. Assuming you're in the terminal,
+at the base directory of the project, follow the steps below.
 
-We create a virtualenv:
+Create a virtualenv called venv that uses Python 3:
 ```sh
-virtualenv venv
+virtualenv -p $(which python3) venv
 ```
 Activate the virtualenv:
 ```sh
 source venv/bin/activate
 ```
-Install python dependencies
+Install python dependencies (with python 3 pip)
 ```sh
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 Install javascript dependencies
 ```sh
@@ -54,7 +54,7 @@ grunt
 ...and we're done (assuming there were no errors).
 
 Running the app(s):
---------------
+------------------
 Running is quite simple. The database is abstracted behind a REST API, so runs in a separate Flask app. This means that you have to have them both running for it to work. You'll also want to run them in separate terminals.
 
 Note that you'll need to activate the virtualenv for both of these applications
@@ -67,6 +67,20 @@ python3 rundbapi.py
 ```sh
 python3 runwebfront.py
 ```
+
+Deploying the app:
+-----------------
+For deployment, I use gunicorn and Nginx. Here's a brief description of how I've gone about it:
+
+webfront is running from gunicorn locally on 127.0.0.1, on a port that isn't 80. I use Nginx as a reverse proxy
+to forward web traffic to it. You can find plenty of guides for setting up Flask + gunicorn + Nginx floating around
+the internet.
+
+dbapi is running from gunicorn on 127.0.0.1 as well. This doesn't need to be exposed to the web until I've made the
+ReST API public, as webfront makes all the connections to it locally.
+
+When I want to deploy new changes, I simply push them to my repo, then run a script which automatically pulls from
+git on the server end, then restarts the apps.
 
 About the database ReST API
 ---------------------------
