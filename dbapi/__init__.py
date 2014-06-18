@@ -9,9 +9,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from multiprocessing import Lock
 from werkzeug.local import LocalProxy
+from utils.config_utils import load_config_object
 
 app = Flask(__name__)
-app.config.from_object("config.Dbapi")
+load_config_object(app, "Dbapi")
+app.secret_key = app.config["SECRET_KEY"]
 
 log_handler = RotatingFileHandler(os.path.join(app.config["LOG_DIRECTORY"], __name__),
                                   maxBytes=app.config["MAX_LOG_BYTES"], backupCount=1)
