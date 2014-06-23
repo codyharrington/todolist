@@ -6,11 +6,12 @@ def increment_failed_logins(ip):
         failed_ip_login_attempt_counts[ip] = 1
     else:
         failed_ip_login_attempt_counts[ip] += 1
+    app.logger.warning("{} failed login count increased to {}".format(ip, failed_ip_login_attempt_counts[ip]))
 
 def clear_failed_logins(ip):
     if ip in failed_ip_login_attempt_counts:
         del failed_ip_login_attempt_counts[ip]
-        app.logger.warning("{} failed login count has been cleared".format(ip))
+        app.logger.warning("{} failed login count has been reset".format(ip))
 
 def ip_failed_previously(ip):
     return ip in failed_ip_login_attempt_counts
@@ -29,6 +30,5 @@ def should_display_captcha(ip, forced_captcha=False):
     if forced_captcha:
         return app.config["FORCED_RECAPTCHA_ENABLED"]
     if ip_attempts_past_threshold(ip) and app.config["REACTIVE_RECAPTCHA_ENABLED"]:
-        app.logger.warning("{} is past the failed login threshold".format(ip))
         return True
     return False
