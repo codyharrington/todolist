@@ -6,6 +6,8 @@ from dbapi import app
 from dbapi.models import *
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+from utils.messages import *
+from utils.rest_api_utils import *
 
 class DbapiTestCase(unittest.TestCase):
     def init_db(self):

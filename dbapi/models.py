@@ -72,7 +72,7 @@ class User(Base):
         if "salt" in data:
             del data["salt"]
         if recurse:
-            if hasattr(self, "tasks"):
+            if hasattr(self, "tasks") and self.tasks is not None:
                 data["tasks"] = [task.todict(recurse=False) for task in self.tasks]
             else:
                 data["tasks"] = []
@@ -106,7 +106,7 @@ class Task(Base):
     def todict(self, recurse=True):
         data = super().todict()
         if recurse:
-            if hasattr(self, "user"):
+            if hasattr(self, "user") and self.user is not None:
                 data["user"] = self.user.todict(recurse=False)
             else:
                 data["user"] = None
