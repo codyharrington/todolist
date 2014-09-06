@@ -72,9 +72,23 @@ class UserTest(DbapiTestCase):
         self.assertEqual(return_value.status_code, HTTPStatusCodes.NOT_FOUND)
 
     def test_authenticate_user_success(self):
-        auth_dict = {"username": self.test_user.username, "password": self.test_user.password}
+        auth_dict = {"username": self.test_user.username, "password": "password"}
         return_value = self.app.post("/user/authenticate", data=json.dumps(auth_dict))
         self.assertEqual(self.test_user.todict(), json.loads(return_value.data.decode())["data"])
+
+    def test_authenticate_user_failure(self):
+        auth_dict = {"username": self.test_user.username, "password": "incorrectpassword"}
+        return_value = self.app.post("/user/authenticate", data=json.dumps(auth_dict))
+        return_text = json.loads(return_value.data.decode())["err"]
+        self.assertIn(AUTHENTICATION_FAILURE, return_text)
+        self.assertEqual(return_value.status_code, HTTPStatusCodes.UNAUTHORISED)
+
+    def test_delete_user_not_found(self):
+        auth_dict = {"username": "incorrectusername", "password": "password"}
+        return_value = self.app.post("/user/authenticate", data=json.dumps(auth_dict))
+        return_text = json.loads(return_value.data.decode())["err"]
+        self.assertIn(USER_NOT_FOUND, return_text)
+        self.assertEqual(return_value.status_code, HTTPStatusCodes.NOT_FOUND)
 
 if __name__ == '__main__':
     unittest.main()
