@@ -71,5 +71,10 @@ class UserTest(DbapiTestCase):
         self.assertIn(USER_NOT_FOUND, return_text)
         self.assertEqual(return_value.status_code, HTTPStatusCodes.NOT_FOUND)
 
+    def test_authenticate_user_success(self):
+        auth_dict = {"username": self.test_user.username, "password": self.test_user.password}
+        return_value = self.app.post("/user/authenticate", data=json.dumps(auth_dict))
+        self.assertEqual(self.test_user.todict(), json.loads(return_value.data.decode())["data"])
+
 if __name__ == '__main__':
     unittest.main()
