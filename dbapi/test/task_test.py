@@ -82,6 +82,6 @@ class TaskTest(DbapiTestCase):
         return_text = json.loads(return_value.data.decode())["err"]
         self.assertIn(TASK_NOT_FOUND, return_text)
         self.assertEqual(return_value.status_code, HTTPStatusCodes.NOT_FOUND)
-        
+
 if __name__ == '__main__':
     unittest.main()

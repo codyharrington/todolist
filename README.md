@@ -6,7 +6,7 @@ This is task tracking software. If you'd like to try it out for yourself, read o
 
 These installation instructions will probably be simplified at a later date. They have only been tested on a Linux system.
 
-![Build Status](https://jenkins.harringtonca.com/job/todolist/badge/icon)
+[![Build Status](https://jenkins.harringtonca.com/job/todolist/badge/icon)](https://jenkins.harringtonca.com/job/todolist/)
 
 Requirements
 ---------------
