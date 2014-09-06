@@ -38,7 +38,6 @@ def update_task(id):
         raise NotFoundException(TASK_NOT_FOUND)
     else:
         task.fromdict(data)
-        flask.g.db_session.merge(task)
         flask.g.db_session.commit()
         return rest_jsonify(message=RESOURCE_UPDATED)
 
