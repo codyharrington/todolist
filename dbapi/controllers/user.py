@@ -26,7 +26,7 @@ def create_new_user():
 
 @app.route("/user/<username>", methods=["POST", "PUT"])
 def update_user(username):
-    data = validate_convert_request(request.data, required_headers=User.required_fields)
+    data = validate_convert_request(request.data, required_headers=[])
     user = flask.g.db_session.query(User).filter(User.username == username).first()
     if user is None:
         raise NotFoundException(USER_NOT_FOUND)
